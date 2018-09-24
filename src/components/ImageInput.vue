@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :title="tooltip">
     <!-- slot for parent component to activate the file changer -->
     <div @click="launchFilePicker()">
       <slot name="activator"></slot>
@@ -8,6 +8,7 @@
     <input type="file"
        ref="file"
        :name="uploadFieldName"
+       :accept="accept"
        @change="onFileChange(
           $event.target.name, $event.target.files)"
        style="display:none">
@@ -31,11 +32,14 @@
       errorDialog: null,
       errorText: '',
       uploadFieldName: 'file',
-      maxSize: 1024
+      maxSize: this.maxsize : 1024
     }),
     props: {
     // Use "value" to enable using v-model
       value: Object,
+      tooltip: String,
+      accept: String,
+      maxsize: Number
     },
     methods: {
       launchFilePicker(){
@@ -45,13 +49,13 @@
         const { maxSize } = this
         let imageFile = file[0]
 
-        if (file.length>0) {
+        if (file.length > 0) {
           let size = imageFile.size / maxSize / maxSize
           if (!imageFile.type.match('image.*')) {
             // check whether the upload is an image
             this.errorDialog = true
             this.errorText = 'Please choose an image file'
-          } else if (size>1) {
+          } else if (this.maxsize && size > 1) {
             // check whether the size is greater than the size limit
             this.errorDialog = true
             this.errorText = 'Your file is too big! Please select an image under 1MB'

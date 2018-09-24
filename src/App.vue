@@ -1,7 +1,11 @@
 <template>
   <v-app id="app" class="mt-0">
     <v-container grid-list-xl>
-      <image-input v-model="avatar">
+      <image-input
+            v-model="avatar"
+            tooltip="Click to change avatar profile"
+            :maxsize="size"
+            accept="image/*">
         <div slot="activator">
           <v-avatar size="150px" v-ripple v-if="!avatar" class="grey lighten-3 mb-3">
             <span>Click to add avatar</span>
@@ -29,7 +33,8 @@ export default {
     return {
       avatar: null,
       saving: false,
-      saved: false
+      saved: false,
+      size: 2048
     }
   },
   components: {
